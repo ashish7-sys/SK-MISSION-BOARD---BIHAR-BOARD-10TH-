@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "Chapter": {
+      "title": "Chapter",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "chapterNumber": { "type": "number" },
+        "titleHindi": { "type": "string" },
+        "titleEnglish": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "isImportant": { "type": "boolean" },
+        "hasPdfs": { "type": "boolean" },
+        "hasVideos": { "type": "boolean" }
+      },
+      "required": ["id", "subjectId", "chapterNumber", "titleHindi"]
+    },
+    "PDFMaterial": {
+      "title": "PDFMaterial",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "chapterId": { "type": "string" },
+        "chapterTitle": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "fileSizeMb": { "type": "number" },
+        "pageCount": { "type": "number" },
+        "uploadDate": { "type": "string" },
+        "isNew": { "type": "boolean" },
+        "isPublished": { "type": "boolean" },
+        "orderIndex": { "type": "number" }
+      },
+      "required": ["id", "subjectId", "chapterId", "title", "fileUrl"]
+    },
+    "YouTubeVideo": {
+      "title": "YouTubeVideo",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "chapterId": { "type": "string" },
+        "chapterTitle": { "type": "string" },
+        "title": { "type": "string" },
+        "youtubeUrl": { "type": "string" },
+        "youtubeVideoId": { "type": "string" },
+        "description": { "type": "string" },
+        "durationText": { "type": "string" },
+        "uploadDate": { "type": "string" },
+        "isPublished": { "type": "boolean" },
+        "orderIndex": { "type": "number" }
+      },
+      "required": ["id", "subjectId", "chapterId", "title", "youtubeVideoId"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "date": { "type": "string" },
+        "isImportant": { "type": "boolean" },
+        "isPublished": { "type": "boolean" }
+      },
+      "required": ["id", "title", "content", "date"]
+    },
+    "AppVersionInfo": {
+      "title": "AppVersionInfo",
+      "type": "object",
+      "properties": {
+        "versionName": { "type": "string" },
+        "versionCode": { "type": "number" },
+        "releaseDate": { "type": "string" },
+        "apkDownloadUrl": { "type": "string" },
+        "releaseNotes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "isMandatory": { "type": "boolean" },
+        "latestVersionCode": { "type": "number" }
+      },
+      "required": ["versionName", "versionCode", "apkDownloadUrl"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    },
+    "MusicTrack": {
+      "title": "MusicTrack",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "audioUrl": { "type": "string" },
+        "durationText": { "type": "string" },
+        "isPublished": { "type": "boolean" },
+        "orderIndex": { "type": "number" },
+        "addedDate": { "type": "string" }
+      },
+      "required": ["id", "title", "audioUrl"]
+    }
+  },
+  "firestore": {
+    "/chapters/{chapterId}": {
+      "schema": { "$ref": "#/entities/Chapter" },
+      "description": "BSEB Class 10 chapter details"
+    },
+    "/pdfs/{pdfId}": {
+      "schema": { "$ref": "#/entities/PDFMaterial" },
+      "description": "Study material PDF documents"
+    },
+    "/videos/{videoId}": {
+      "schema": { "$ref": "#/entities/YouTubeVideo" },
+      "description": "YouTube video lectures"
+    },
+    "/music/{musicId}": {
+      "schema": { "$ref": "#/entities/MusicTrack" },
+      "description": "Study instrumental music tracks"
+    },
+    "/announcements/{announcementId}": {
+      "schema": { "$ref": "#/entities/Announcement" },
+      "description": "App announcements and board notices"
+    },
+    "/app_version/{versionId}": {
+      "schema": { "$ref": "#/entities/AppVersionInfo" },
+      "description": "App release and update info"
+    },
+    "/admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Authorized admin users record"
+    }
+  }
+}

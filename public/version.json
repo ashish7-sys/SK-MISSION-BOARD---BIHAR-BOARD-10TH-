@@ -1,0 +1,16 @@
+{
+  "versionCode": 104,
+  "versionName": "1.0.4",
+  "apkUrl": "https://github.com/skmissionboard/app-releases/releases/latest/download/sk-mission-board.apk",
+  "updateMessage": "SK MISSION BOARD का नया संस्करण उपलब्ध है। नए 2026 नोट्स, VVI प्रश्न एवं तेज़ परफॉर्मेंस का लाभ उठाएं।",
+  "forceUpdate": false,
+  "releaseDate": "2026-08-12",
+  "releaseNotes": [
+    "✨ Ultra-Smooth GPU Neon Wave Shader System added with responsive touch ripples.",
+    "📚 Complete 6-Subject Bihar Board Class 10 Curriculum Architecture (All 129 Chapters).",
+    "📑 Integrated HD Document Reader with Zoom, Page Navigation, Offline Cache & Direct Download.",
+    "🎥 Official SK MISSION BOARD YouTube Channel Video Lecture Stream.",
+    "🔒 Secure Single-Administrator Control Board with Firebase Cloud Auth & Rules.",
+    "🔄 Custom In-App APK Download & Seamless Installer without Google Play dependencies."
+  ]
+}

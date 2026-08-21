@@ -1,0 +1,77 @@
+workflows:
+  android-release:
+    name: SK MISSION BOARD Android APK & AAB Production Build
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+
+    environment:
+      android_signing:
+        - sk_mission_board_keystore
+
+      vars:
+        PACKAGE_NAME: "com.skmissionboard.app"
+        APP_NAME: "SK MISSION BOARD"
+
+      node: 22
+      java: 21
+
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm install
+
+      - name: Install Capacitor packages
+        script: |
+          npm install @capacitor/core @capacitor/android
+          npm install --save-dev @capacitor/cli
+
+      - name: Build Web Application
+        script: |
+          npm run build
+
+      - name: Create Capacitor Configuration
+        script: |
+          cat > capacitor.config.json <<EOF
+          {
+            "appId": "com.skmissionboard.app",
+            "appName": "SK MISSION BOARD",
+            "webDir": "dist"
+          }
+          EOF
+
+      - name: Add Android Platform
+        script: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Sync Capacitor Android
+        script: |
+          npx cap sync android
+
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+
+      - name: Check Java Version
+        script: |
+          java -version
+          javac -version
+
+      - name: Build Release APK
+        script: |
+          cd android
+          chmod +x gradlew
+          ./gradlew clean
+          ./gradlew assembleRelease
+
+      - name: Build Release AAB
+        script: |
+          cd android
+          chmod +x gradlew
+          ./gradlew bundleRelease
+
+    artifacts:
+      - android/app/build/outputs/apk/release/*.apk
+      - android/app/build/outputs/bundle/release/*.aab
+      - dist/**/*
