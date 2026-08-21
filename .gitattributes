@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.mp4 binary
+*.webp binary
+*.zip binary

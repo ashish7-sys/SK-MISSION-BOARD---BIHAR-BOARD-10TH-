@@ -58,6 +58,16 @@ workflows:
           java -version
           javac -version
 
+      - name: Verify and Ensure Gradle Wrapper
+        script: |
+          cd android
+          if [ ! -f "gradle/wrapper/gradle-wrapper.jar" ] || ! unzip -t "gradle/wrapper/gradle-wrapper.jar" >/dev/null 2>&1; then
+            echo "Repairing Gradle wrapper..."
+            gradle wrapper --gradle-version 8.11.1 --distribution-type all || true
+          fi
+          chmod +x gradlew
+          ./gradlew --version
+
       - name: Build Release APK
         script: |
           cd android
