@@ -2,12 +2,12 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 
-const LOGO_SRC = 'src/assets/images/sk_app_icon_1786687497579.jpg';
-const BG_SRC = 'src/assets/images/cyber_purple_bg_1786704278990.jpg';
+const LOGO_SRC = 'src/assets/images/sk_logo.png';
+const BG_FRAME_SRC = 'src/assets/images/cyber_bg.jpg';
 
 async function makeRound(srcPath: string, size: number): Promise<Buffer> {
   const circleSvg = Buffer.from(
-    `<svg width="${size}" height="${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2}" fill="#fff"/></svg>`
+    `<svg width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="#fff"/></svg>`
   );
   return sharp(srcPath)
     .resize(size, size, { fit: 'cover' })
@@ -24,12 +24,13 @@ async function makeSquare(srcPath: string, size: number): Promise<Buffer> {
 }
 
 async function makeAdaptiveForeground(srcPath: string, size: number): Promise<Buffer> {
+  // Center logo inside adaptive icon canvas (takes ~72% of canvas)
   const innerSize = Math.round(size * 0.72);
   const inner = await sharp(srcPath)
     .resize(innerSize, innerSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
-  
+
   const pad = Math.round((size - innerSize) / 2);
   return sharp({
     create: {
@@ -39,13 +40,13 @@ async function makeAdaptiveForeground(srcPath: string, size: number): Promise<Bu
       background: { r: 0, g: 0, b: 0, alpha: 0 }
     }
   })
-  .composite([{ input: inner, top: pad, left: pad }])
-  .png()
-  .toBuffer();
+    .composite([{ input: inner, top: pad, left: pad }])
+    .png()
+    .toBuffer();
 }
 
 async function run() {
-  console.log('Generating Android Mipmap icons...');
+  console.log('Generating Android Mipmap icons with user logo...');
   const densities = [
     { name: 'mdpi', icon: 48, fg: 108 },
     { name: 'hdpi', icon: 72, fg: 162 },
@@ -70,7 +71,7 @@ async function run() {
     console.log(`✓ Generated mipmap-${d.name}`);
   }
 
-  console.log('Generating Splash Screens...');
+  console.log('Generating Splash Screens with user theme...');
   const splashes = [
     { dir: 'drawable', w: 480, h: 800 },
     { dir: 'drawable-land-mdpi', w: 480, h: 320 },
@@ -88,11 +89,11 @@ async function run() {
   for (const s of splashes) {
     const targetDir = path.join('android/app/src/main/res', s.dir);
     if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-    
-    const bgResized = await sharp(BG_SRC)
+
+    const bgResized = await sharp(BG_FRAME_SRC)
       .resize(s.w, s.h, { fit: 'cover' })
       .toBuffer();
-    
+
     const logoSize = Math.min(Math.round(Math.min(s.w, s.h) * 0.4), 256);
     const logoCircle = await makeRound(LOGO_SRC, logoSize);
 
@@ -110,18 +111,21 @@ async function run() {
   }
 
   console.log('Generating Web & Project Assets...');
-  const logoPng1024 = await sharp(LOGO_SRC).png().toBuffer();
-  fs.writeFileSync('public/sk_logo.png', logoPng1024);
-  fs.writeFileSync('public/sk_app_icon.png', logoPng1024);
-  fs.writeFileSync('src/assets/images/sk_logo.png', logoPng1024);
-  
+  const logoPng = await sharp(LOGO_SRC).png().toBuffer();
+  fs.writeFileSync('public/sk_logo.png', logoPng);
+  fs.writeFileSync('public/sk_app_icon.png', logoPng);
+
   const faviconBuf = await sharp(LOGO_SRC).resize(64, 64).png().toBuffer();
   fs.writeFileSync('public/favicon.png', faviconBuf);
 
-  const bgJpg = await sharp(BG_SRC).jpeg({ quality: 90 }).toBuffer();
+  const logoJpg = await sharp(LOGO_SRC).jpeg({ quality: 95 }).toBuffer();
+  fs.writeFileSync('public/sk_app_icon.jpg', logoJpg);
+  fs.writeFileSync('src/assets/images/sk_app_icon_1786687497579.jpg', logoJpg);
+  fs.writeFileSync('src/assets/images/sk_app_icon_1786624162772.jpg', logoJpg);
+
+  const bgJpg = await sharp(BG_FRAME_SRC).jpeg({ quality: 90 }).toBuffer();
   fs.writeFileSync('public/cyber_purple_bg.jpg', bgJpg);
-  fs.writeFileSync('src/assets/images/cyber_bg.jpg', bgJpg);
-  fs.writeFileSync('public/sk_app_icon.jpg', await sharp(LOGO_SRC).jpeg({ quality: 90 }).toBuffer());
+  fs.writeFileSync('src/assets/images/cyber_purple_bg_1786704278990.jpg', bgJpg);
 
   console.log('ALL ICONS AND ASSETS SUCCESSFULLY GENERATED!');
 }

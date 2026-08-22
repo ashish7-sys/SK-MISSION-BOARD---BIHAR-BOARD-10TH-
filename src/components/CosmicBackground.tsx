@@ -61,7 +61,7 @@ export const CosmicBackground: React.FC<CosmicBackgroundProps> = ({ customVideoU
     const driveMatch = raw.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);
     if (driveMatch && driveMatch[1]) {
       const driveId = driveMatch[1];
-      if (driveId === "1NitBnZBvFe_BKFrkbj3ZrsKcwyMXxuCF") {
+      if (driveId === "1J9z95DhiQunJBJzsNfraeznSwvHT2wNm" || driveId === "1NitBnZBvFe_BKFrkbj3ZrsKcwyMXxuCF") {
         return "/bg_theme.mp4";
       }
       return `https://drive.usercontent.google.com/download?id=${driveId}&export=download`;
