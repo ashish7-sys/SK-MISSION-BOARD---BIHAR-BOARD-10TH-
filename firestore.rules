@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Chapters collection: Public read, open write for admin sync
+    match /chapters/{chapterId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // PDFs collection: Public read, open write for admin sync
+    match /pdfs/{pdfId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Videos collection: Public read, open write for admin sync
+    match /videos/{videoId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Music collection: Public read, open write for admin sync
+    match /music/{musicId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Announcements collection: Public read, open write for admin sync
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // App Version info: Public read, open write for admin sync
+    match /app_version/{versionId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Meta collection
+    match /meta/{metaId} {
+      allow read, write: if true;
+    }
+
+    // Admins registry
+    match /admins/{adminUid} {
+      allow read, write: if true;
+    }
+
+    // Analytics Collections (Aggregate and Daily summaries)
+    match /analytics_summary/{summaryId} {
+      allow read, write: if true;
+    }
+
+    match /analytics_daily/{dateId} {
+      allow read, write: if true;
+    }
+  }
+}

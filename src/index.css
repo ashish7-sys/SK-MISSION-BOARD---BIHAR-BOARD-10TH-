@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+
+@keyframes edgeNeonSweep {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatGlowUpDown {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-glow-up-down {
+  animation: floatGlowUpDown 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.neon-border-sweep {
+  position: relative;
+}
+
+.neon-border-sweep::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.6),
+    rgba(6, 182, 212, 0.8),
+    rgba(59, 130, 246, 0.8),
+    rgba(168, 85, 247, 0.8),
+    rgba(236, 72, 153, 0.8),
+    rgba(245, 158, 11, 0.6)
+  );
+  background-size: 200% 200%;
+  animation: edgeNeonSweep 8s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  will-change: background-position;
+}
+
+/* Background decorative video styles - permanently eliminate native browser timeline/controls (e.g. 0:07/0:12) */
+video.bg-decorative-video,
+video[data-decorative="true"] {
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+video.bg-decorative-video::-webkit-media-controls,
+video.bg-decorative-video::-webkit-media-controls-enclosure,
+video.bg-decorative-video::-webkit-media-controls-panel,
+video.bg-decorative-video::-webkit-media-controls-play-button,
+video.bg-decorative-video::-webkit-media-controls-start-playback-button,
+video.bg-decorative-video::-webkit-media-controls-current-time-display,
+video.bg-decorative-video::-webkit-media-controls-time-remaining-display,
+video.bg-decorative-video::-webkit-media-controls-timeline,
+video.bg-decorative-video::-webkit-media-controls-timeline-container,
+video.bg-decorative-video::-webkit-media-controls-volume-slider,
+video.bg-decorative-video::-webkit-media-controls-mute-button,
+video.bg-decorative-video::-webkit-media-controls-toggle-closed-captions-button,
+video.bg-decorative-video::-webkit-media-controls-fullscreen-button,
+video[data-decorative="true"]::-webkit-media-controls,
+video[data-decorative="true"]::-webkit-media-controls-enclosure,
+video[data-decorative="true"]::-webkit-media-controls-panel,
+video[data-decorative="true"]::-webkit-media-controls-timeline,
+video[data-decorative="true"]::-webkit-media-controls-current-time-display {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+
